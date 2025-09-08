@@ -1,4 +1,4 @@
-name: Bike Rental ETL
+name: Bike Rental ETL + Supabase Deploy
 
 on:
   push:
@@ -19,12 +19,28 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           pip install pandas psycopg2-binary python-dotenv jupyter nbconvert
 
       - name: Run ETL Notebook
         env:
-          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}   # <-- Pass secret into notebook execution
+          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}   # Your Postgres password
         run: |
           jupyter nbconvert --to notebook --execute Bike_rental.ipynb --output Bike_rental_out.ipynb
+
+      - name: Install Supabase CLI
+        run: |
+          curl -L https://github.com/supabase/cli/releases/download/v1.80.0/supabase_1.80.0_linux_amd64.tar.gz | tar xvz
+          sudo mv supabase /usr/local/bin
+
+      - name: Deploy to Supabase
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          # Deploy database migrations (if any)
+          supabase db push
+          
+          # Deploy Supabase functions (if you have any)
+          supabase functions deploy
