@@ -9,6 +9,7 @@ on:
 jobs:
   etl_job:
     runs-on: ubuntu-latest
+    environment: PG_PASSWORD   # <- link to your environment containing PG_PASSWORD
 
     steps:
       - name: Checkout repository
