@@ -6,26 +6,31 @@ on:
       - main
   workflow_dispatch:
 
+env:
+ 
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   etl_job:
     runs-on: ubuntu-latest
-    environment: PG_PASSWORD   # <- link to your environment containing PG_PASSWORD
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 
         with:
-          python-version: 3.11
+          python-version: '3.11'
+          cache: 'pip' 
 
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install pandas psycopg2-binary python-dotenv jupyter nbconvert
 
       - name: Run ETL Notebook
         env:
-          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}   # <-- Pass secret into notebook execution
+          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
         run: |
           jupyter nbconvert --to notebook --execute Bike_rental.ipynb --output Bike_rental_out.ipynb
