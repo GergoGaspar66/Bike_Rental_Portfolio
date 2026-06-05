@@ -28,5 +28,8 @@ jobs:
       - name: Run ETL Notebook
         env:
           SUPABASE: ${{ secrets.SUPABASE_PW }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          SUPABASE_HOST: ${{ secrets.SUPABASE_HOST }}
+          SUPABASE_PORT: ${{ secrets.SUPABASE_PORT }}
         run: |
           jupyter nbconvert --to notebook --execute Bike_rental.ipynb --output Bike_rental_out.ipynb
