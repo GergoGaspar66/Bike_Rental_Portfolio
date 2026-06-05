@@ -12,13 +12,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6 # Upgraded to v6 to natively use Node 24
+        uses: actions/checkout@v6 
 
       - name: Set up Python
-        uses: actions/setup-python@v6 # Upgraded to v6 to natively use Node 24
+        uses: actions/setup-python@v6 
         with:
           python-version: '3.11'
-          # Removed cache: 'pip' to eliminate the missing requirements.txt warning
+          
 
       - name: Install dependencies
         run: |
@@ -27,6 +27,6 @@ jobs:
 
       - name: Run ETL Notebook
         env:
-          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+          SUPABASE: ${{ secrets.SUPABASE_PW }}
         run: |
           jupyter nbconvert --to notebook --execute Bike_rental.ipynb --output Bike_rental_out.ipynb
