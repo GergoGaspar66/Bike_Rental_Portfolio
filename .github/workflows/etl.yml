@@ -6,23 +6,19 @@ on:
       - main
   workflow_dispatch:
 
-env:
- 
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-
 jobs:
   etl_job:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v6 # Upgraded to v6 to natively use Node 24
 
       - name: Set up Python
-        uses: actions/setup-python@v5 
+        uses: actions/setup-python@v6 # Upgraded to v6 to natively use Node 24
         with:
           python-version: '3.11'
-          cache: 'pip' 
+          # Removed cache: 'pip' to eliminate the missing requirements.txt warning
 
       - name: Install dependencies
         run: |
