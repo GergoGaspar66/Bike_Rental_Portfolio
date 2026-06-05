@@ -9,6 +9,7 @@ on:
 jobs:
   etl_job:
     runs-on: ubuntu-latest
+    environment: SUPABASE
 
     steps:
       - name: Checkout repository
@@ -27,7 +28,7 @@ jobs:
 
       - name: Run ETL Notebook
         env:
-          SUPABASE: ${{ secrets.SUPABASE_PW }}
+          SUPABASE_PW: ${{ secrets.SUPABASE_PW }}
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
           SUPABASE_HOST: ${{ secrets.SUPABASE_HOST }}
           SUPABASE_PORT: ${{ secrets.SUPABASE_PORT }}
